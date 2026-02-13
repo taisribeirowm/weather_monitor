@@ -35,7 +35,7 @@ struct ContentView: View {
             }
             
             if let weather = viewModel.weather {
-                VStack(spacing: 12) {
+                VStack(spacing: 10) {
                     Text(weather.location.name)
                         .font(.title2)
                         .bold()
@@ -44,7 +44,16 @@ struct ContentView: View {
                         .font(.system(size: 40))
                         .bold()
                     
-                    Text(weather.current.condition.text)
+                    VStack{
+                        AsyncImage(url: URL(string: "https:\(weather.current.condition.icon)")) { image in
+                            image.resizable()
+                        } placeholder: {
+                            ProgressView()
+                        }
+                        .frame(width: 50, height: 50)
+                        
+                        Text(weather.current.condition.text)
+                    }
                     
                     Text("Umidade: \(weather.current.humidity)%")
                     Text("Vento: \(weather.current.wind_kph) km/h")
