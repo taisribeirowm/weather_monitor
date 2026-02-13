@@ -13,11 +13,12 @@ internal import Combine
 class WeatherViewModel: ObservableObject {
     
     @Published var weather: WeatherResponse?
+    @Published var forecast: WeatherForecastResponse?
     @Published var isLoading = false
     @Published var errorMessage: String?
     @Published var city: String = ""
     
-    private let service = WeatherService(apiKey: "SUA_API_KEY")
+    private let service = WeatherService(apiKey: "78ca19628e8d47abaf4195149261202")
     
     func fetchWeather() async {
         guard !city.isEmpty else { return }
@@ -27,6 +28,7 @@ class WeatherViewModel: ObservableObject {
         
         do {
             weather = try await service.fetchCurrentWeather(for: city)
+            forecast = try await service.fetch7DayForecast(for: city)
         } catch {
             errorMessage = "Erro ao buscar clima."
         }
